@@ -2,6 +2,8 @@
   "name": "snaptest-cli",
   "version": "1.3.2",
   "description": "A command line tool for the SnapTest chrome extension",
+  "repository": "ozymandias547/snaptest-cli",
+  "homepage": "https://www.snaptest.io/",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
