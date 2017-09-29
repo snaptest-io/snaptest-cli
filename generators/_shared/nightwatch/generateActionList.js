@@ -7,9 +7,10 @@ module.exports.generateActionList = function(actions, components) {
 
   var generatedCode = "";
 
-  actions.forEach((action) => {
+  actions.forEach((action, idx) => {
 
-    var selector = action.selector;
+    var selector = action.selector
+    var selectorType = action.selectorType || "CSS";
     var description = action.description || util.buildActionDescription(action);
 
     if (action.type === Actions.COMPONENT) {
@@ -46,22 +47,22 @@ module.exports.generateActionList = function(actions, components) {
 
     if (action.type === Actions.MOUSEOVER) {
       generatedCode += `
-      .moveToElement("${action.selector}", 1, 1, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .moveToElement(\`${selector}\`, \`${selectorType}\`, 1, 1, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.FOCUS) {
       generatedCode += `
-      .focusOnEl("${action.selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .focusOnEl(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.BLUR) {
       generatedCode += `
-      .blurOffEl("${action.selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .blurOffEl(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.SUBMIT) {
       generatedCode += `
-      .formSubmit("${action.selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .formSubmit(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.EXECUTE_SCRIPT) {
@@ -76,12 +77,12 @@ module.exports.generateActionList = function(actions, components) {
 
     if (action.type === Actions.SCROLL_ELEMENT) {
       generatedCode += `
-      .scrollElement("${action.selector}", ${action.x}, ${action.y}, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .scrollElement(\`${selector}\`, \`${selectorType}\`, ${action.x}, ${action.y}, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.SCROLL_WINDOW_ELEMENT) {
       generatedCode += `
-      .scrollWindowToElement("${action.selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .scrollWindowToElement(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.PAGELOAD || action.type === Actions.PATH_ASSERT) {
@@ -108,7 +109,7 @@ module.exports.generateActionList = function(actions, components) {
 
     if (action.type === Actions.MOUSEDOWN) {
       generatedCode += `
-      .click("${selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .click(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.PAUSE) {
@@ -118,50 +119,55 @@ module.exports.generateActionList = function(actions, components) {
 
     if (action.type === Actions.EL_PRESENT_ASSERT) {
       generatedCode += `
-      .elementPresent("${selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .elementPresent(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.EL_NOT_PRESENT_ASSERT) {
       generatedCode += `
-      .elementNotPresent("${selector}", \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .elementNotPresent(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.KEYDOWN) {
       generatedCode += `
-      .sendKeys("${selector}", ${util.getNWKeyValueFromCode(action.keyValue)}, \`${description}\`)`;
+      .sendKeys(\`${selector}\`, \`${selectorType}\`, ${util.getNWKeyValueFromCode(action.keyValue)}, \`${description}\`)`;
     }
 
     if (action.type === Actions.TEXT_ASSERT) {
 
       if (action.regex) {
         generatedCode += `
-          .elTextIs("${selector}", new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+          .elTextIs(\`${selector}\`, \`${selectorType}\`, new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
       } else {
         generatedCode += `
-          .elTextIs("${selector}", \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+          .elTextIs(\`${selector}\`, \`${selectorType}\`, \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
       }
 
     }
 
     if (action.type === Actions.TEXT_REGEX_ASSERT) {
       generatedCode += `
-        .elTextIs("${selector}", new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+        .elTextIs(\`${selector}\`, \`${selectorType}\`, new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+    }
+
+    if (action.type === Actions.STYLE_ASSERT) {
+      generatedCode += `
+        .elStyleIs(\`${selector}\`, \`${selectorType}\`, \`${action.style}\`, \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
     if (action.type === Actions.VALUE_ASSERT) {
       if (action.regex) {
         generatedCode += `
-        .inputValueAssert("${selector}", new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+        .inputValueAssert(\`${selector}\`, \`${selectorType}\`, new RegExp(\`${action.value}\`, "g"), \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
       } else {
         generatedCode += `
-        .inputValueAssert("${selector}", \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+        .inputValueAssert(\`${selector}\`, \`${selectorType}\`, \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
       }
 
     }
 
     if (action.type === Actions.INPUT) {
       generatedCode += `
-      .changeInput("${selector}", \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+      .changeInput(\`${selector}\`, \`${selectorType}\`, \`${action.value}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
   });
