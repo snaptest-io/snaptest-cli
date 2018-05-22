@@ -8,7 +8,7 @@ var EnhancedGenerator = require('./utils/Generator');
 var deepClone = require('deep-clone');
 var rimraf = require('rimraf');
 var _ = require('lodash');
-var API =  'https://www.snaptest.io/api';
+var API =  'https://api.prolific.com/api/snaptest/1';
 
 /* Official SnapTest generators: */
 var generators = {
@@ -20,8 +20,10 @@ program
 	.version(packageInfo.version)
     .option('-f, --folder <folder>', 'The test folder to generate')
     .option('-t, --token <token>', 'Your SnapTest auth token')
+    .option('-a, --account-type <accountType>', 'Context type - user, org, or project')
+    .option('-d, --account-id <accountId>', 'Context type - \'me\' or the id')
     .option('-o, --topDirName <name>', 'The name of the top level directory')
-    .option('-v, --version', 'Get the version of snaptest')
+    .option('-v, --version', 'Get the version of snaptest-cli')
     .option('-r, --framework <framework>', 'The choice of framework to generate')
     .option('-s, --style <style>', 'The style/flavor of the framework you to generate')
     .option('-i, --inputFile <inputFile>', 'Generate from a JSON test file')
@@ -57,6 +59,9 @@ if (generator.styles && generator.styles.length > 1 && generator.styles.indexOf(
 if (typeof program.token === 'undefined' && typeof program.inputFile === "undefined")
   exitWithError('Please supply an auth token via -t <token> or supply a test JSON file with -i <inputFile>.');
 
+if (typeof program.accountType === 'undefined' && typeof program.accountId === 'undefined')
+  exitWithError('Please supply your accounts context type and context id using -ct <contexttype> and -ci <contextid>.');
+
 if (typeof program.framework === 'undefined' && program.customGen === "undefined")
   exitWithError('no framework given.');
 
@@ -82,9 +87,10 @@ function exitWithError(error) {
 
 function getTestData() {
   // if token, get test JSON from the server.  otherwise, assume user is attempting to load a local JSON test file.
+  console.log(API + "/" + program.accountType + '/' + program.accountId + '/multiload');
   return (program.token ?
       request.getAsync({
-        url: API + '/load',
+        url: API + "/" + program.accountType + '/' + program.accountId + '/multiload',
         headers: { 'apikey': program.token },
         "rejectUnauthorized": false,
       }).then((response) => {

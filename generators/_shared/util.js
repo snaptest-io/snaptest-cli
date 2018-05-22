@@ -33,9 +33,9 @@ module.exports.getValueParamsForComponent = function (action, component) {
     var variableInAction = _.find(action.variables, {id: variable.id});
 
     if (variableInAction) {
-      params.push("\"" + variableInAction.value + "\"");
+      params.push("\`" + variableInAction.value + "\`");
     } else {
-      params.push("\"" + variable.defaultValue + "\"");
+      params.push("\`" + variable.defaultValue + "\`");
     }
 
   });
