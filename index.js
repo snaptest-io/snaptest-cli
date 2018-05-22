@@ -8,7 +8,7 @@ var EnhancedGenerator = require('./utils/Generator');
 var deepClone = require('deep-clone');
 var rimraf = require('rimraf');
 var _ = require('lodash');
-var API =  'https://api.prolific.com/api/snaptest/1';
+var API =  'https://api.prolificdevs.com/api/snaptest/1';
 
 /* Official SnapTest generators: */
 var generators = {
