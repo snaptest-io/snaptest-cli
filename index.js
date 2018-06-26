@@ -13,7 +13,8 @@ var API =  'https://api.prolificdevs.com/api/snaptest/1';
 /* Official SnapTest generators: */
 var generators = {
   nightwatch: require("./generators/nightwatch/"),
-  chromeless: require("./generators/chromeless/")
+  chromeless: require("./generators/chromeless/"),
+  csharpnunit: require("./generators/csharpnunit/")
 };
 
 program
@@ -59,8 +60,8 @@ if (generator.styles && generator.styles.length > 1 && generator.styles.indexOf(
 if (typeof program.token === 'undefined' && typeof program.inputFile === "undefined")
   exitWithError('Please supply an auth token via -t <token> or supply a test JSON file with -i <inputFile>.');
 
-if (typeof program.accountType === 'undefined' && typeof program.accountId === 'undefined')
-  exitWithError('Please supply your accounts context type and context id using -ct <contexttype> and -ci <contextid>.');
+if (typeof program.inputFile === "undefined" && (typeof program.accountType === 'undefined' || typeof program.accountId === 'undefined'))
+  exitWithError('Please supply your accounts context type and context id using -ct <contexttype> and -ci <contextid>, or supply a test JSON file with -i <inputFile> .');
 
 if (typeof program.framework === 'undefined' && program.customGen === "undefined")
   exitWithError('no framework given.');
@@ -71,13 +72,20 @@ getTestData()
   .catch((error) => {
     exitWithError("Could not obtain the content for this user. reason: " + error);
   }).then((data) => {
+    console.log("Preparing test data for generation.");
     return prepData(data);
   }).then((testData) => {
+    console.log("Removing previous tests.");
     return removeOldTests(testData)
   }).then((testData) => {
+    console.log("Generating new tests using %s.", program.framework);
     EnhancedGenerator(testData, generator)();
   }).catch((error) => {
-    throw new Error(error);
+    if (error instanceof Error) {
+      throw new Error(error.stack);
+    } else {
+      console.error(error);
+    }
   });
 
 function exitWithError(error) {
@@ -86,26 +94,27 @@ function exitWithError(error) {
 }
 
 function getTestData() {
-  // if token, get test JSON from the server.  otherwise, assume user is attempting to load a local JSON test file.
-  console.log(API + "/" + program.accountType + '/' + program.accountId + '/multiload');
-  return (program.token ?
-      request.getAsync({
-        url: API + "/" + program.accountType + '/' + program.accountId + '/multiload',
-        headers: { 'apikey': program.token },
-        "rejectUnauthorized": false,
-      }).then((response) => {
-        var rawData = JSON.parse(response.body);
-        if (rawData.error) throw new Error(rawData.error);
-        rawData.directory = rawData.directory.tree;
-        return rawData;
-      }) :
-      new Promise((resolve, reject) => {
-        try {
-          return resolve(require(process.cwd() + "/" + program.inputFile));
-        } catch(e) {
-          return reject(e);
-        }
-      }));
+  if (program.inputFile) {
+    console.log("Loading test JSON file from %s.", process.cwd() + "/" + program.inputFile);
+    return new Promise((resolve, reject) => {
+      try {
+        return resolve(require(process.cwd() + "/" + program.inputFile));
+      } catch(e) {
+        return reject(e);
+      }
+    });
+  } else {
+    return request.getAsync({
+      url: API + "/" + program.accountType + '/' + program.accountId + '/multiload',
+      headers: { 'apikey': program.token },
+      "rejectUnauthorized": false,
+    }).then((response) => {
+      var rawData = JSON.parse(response.body);
+      if (rawData.error) throw new Error(rawData.error);
+      rawData.directory = rawData.directory.tree;
+      return rawData;
+    });
+  }
 }
 
 function prepData(userData) {
@@ -120,7 +129,7 @@ function prepData(userData) {
         return reject("Couldn't find directory: " + program.folder + ".  Has it been deleted?");
       }
     } else {
-      directory = deepClone(userData.directory);
+      directory = deepClone(userData.directory.tree);
     }
 
     // add some helper methods to the trees.
@@ -160,7 +169,7 @@ function prepData(userData) {
       }
       else if (node.type === "component") {
         // the node only has the component ID.  Find the component and add some node metadata to it.
-        var component = _.find(userData.components, {id: node.testId});
+        var component = _.find(userData.tests, {id: node.testId});
         if (component) {
           component.nodeId = node.id;
           component.folderPath = node.folderPath;

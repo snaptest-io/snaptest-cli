@@ -2,6 +2,7 @@ var _ = require('lodash');
 var Actions = require('./ActionConsts');
 var URL = require('url-parse');
 var actionDefs = require('./ActionDefs');
+var sanitizeForFilename = require("sanitize-filename");
 
 module.exports.getDefaultLaunchUrlInfo = function (actions) {
 
@@ -98,4 +99,8 @@ module.exports.buildActionDescription = function(action) {
   }
 
   return description;
-}
+};
+
+module.exports.buildTestClassName = function(name) {
+  return sanitizeForFilename(name).replace(/\W|_/g, "");
+};
