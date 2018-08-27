@@ -104,3 +104,7 @@ module.exports.buildActionDescription = function(action) {
 module.exports.buildTestClassName = function(name) {
   return sanitizeForFilename(name).replace(/\W|_/g, "");
 };
+
+module.exports.sanitizeForMethodName = function(name) {
+  return sanitizeForFilename(name).replace(/\W|_/g, "");
+};

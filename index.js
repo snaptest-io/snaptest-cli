@@ -14,7 +14,7 @@ var API =  'https://api.prolificdevs.com/api/snaptest/1';
 var generators = {
   nightwatch: require("./generators/nightwatch/"),
   chromeless: require("./generators/chromeless/"),
-  csharpnunit: require("./generators/csharpnunit/")
+  csharpnunit: require('snaptest-csharpnunit')
 };
 
 program
@@ -129,7 +129,7 @@ function prepData(userData) {
         return reject("Couldn't find directory: " + program.folder + ".  Has it been deleted?");
       }
     } else {
-      directory = deepClone(userData.directory.tree);
+      directory = deepClone(userData.directory);
     }
 
     // add some helper methods to the trees.
