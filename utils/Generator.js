@@ -4,6 +4,7 @@ module.exports = function(testData, generator) {
 
   // Add any SnapTest generator API methods here.
   testData.onComplete = function() {
+    console.log("Tests generated in " + testData.topDirPath);
     console.log("SnapTest generation complete.");
   };
 

@@ -14,7 +14,7 @@ var API =  'https://api.prolificdevs.com/api/snaptest/1';
 var generators = {
   nightwatch: require("./generators/nightwatch/"),
   chromeless: require("./generators/chromeless/"),
-  csharpnunit: require('snaptest-csharpnunit')
+  csharpnunit: require('csharpnunit-generator')
 };
 
 program
@@ -98,7 +98,9 @@ function getTestData() {
     console.log("Loading test JSON file from %s.", process.cwd() + "/" + program.inputFile);
     return new Promise((resolve, reject) => {
       try {
-        return resolve(require(process.cwd() + "/" + program.inputFile));
+        var testData = require(process.cwd() + "/" + program.inputFile);
+        testData.directory = testData.directory.tree;
+        return resolve(testData);
       } catch(e) {
         return reject(e);
       }

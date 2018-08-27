@@ -1,6 +1,6 @@
 {
   "name": "snaptest-cli",
-  "version": "2.0.8",
+  "version": "2.2.0",
   "description": "A command line tool for the SnapTest chrome extension",
   "repository": "ozymandias547/snaptest-cli",
   "homepage": "https://www.snaptest.io/",
@@ -26,7 +26,7 @@
     "request": "2.81.0",
     "rimraf": "2.6.1",
     "sanitize-filename": "1.6.1",
-    "snaptest-csharpnunit": "^1.0.0",
+    "csharpnunit-generator": "^1.0.0",
     "touch": "1.0.0",
     "url-parse": "1.4.3",
     "varname": "2.0.3"
