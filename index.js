@@ -8,13 +8,14 @@ var EnhancedGenerator = require('./utils/Generator');
 var deepClone = require('deep-clone');
 var rimraf = require('rimraf');
 var _ = require('lodash');
+var VERSION = require('./package.json').version;
 var API =  'https://api.prolificdevs.com/api/snaptest/1';
 
 /* Official SnapTest generators: */
 var generators = {
   nightwatch: require("./generators/nightwatch/"),
   chromeless: require("./generators/chromeless/"),
-  csharpnunit: require('csharpnunit-generator')
+  csharp: require('csharp-generator')
 };
 
 program
@@ -67,6 +68,8 @@ if (typeof program.framework === 'undefined' && program.customGen === "undefined
   exitWithError('no framework given.');
 
 /* Load and prepare the test data for generation */
+
+console.log("snaptest-cli@" + VERSION);
 
 getTestData()
   .catch((error) => {

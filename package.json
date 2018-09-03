@@ -1,14 +1,14 @@
 {
   "name": "snaptest-cli",
-  "version": "2.2.0",
+  "version": "2.2.2",
   "description": "A command line tool for the SnapTest chrome extension",
-  "repository": "ozymandias547/snaptest-cli",
+  "repository": "snaptest-io/snaptest-cli",
   "homepage": "https://www.snaptest.io/",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Joseph Jung",
+  "author": "Prolific Devs",
   "license": "MIT",
   "bin": {
     "snaptest": "./index.js"
@@ -26,7 +26,7 @@
     "request": "2.81.0",
     "rimraf": "2.6.1",
     "sanitize-filename": "1.6.1",
-    "csharpnunit-generator": "^1.0.0",
+    "csharp-generator": "^1.0.0",
     "touch": "1.0.0",
     "url-parse": "1.4.3",
     "varname": "2.0.3"
