@@ -3,6 +3,7 @@ const Actions = require('./ActionConsts');
 var actionDefs = [
   { name: "...", value: "", isDefault: true },
   { name: "Click element", value: Actions.MOUSEDOWN},
+  { name: "Double click element", value: Actions.DOUBLECLICK},
   { name: "Press key...", value: Actions.KEYDOWN},
   { name: "Change input to...", value: Actions.INPUT},
   { name: "Form submit", value: Actions.SUBMIT},
