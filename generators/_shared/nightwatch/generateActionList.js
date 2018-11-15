@@ -112,6 +112,11 @@ module.exports.generateActionList = function(actions, components) {
       .click(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
     }
 
+    if (action.type === Actions.DOUBLECLICK) {
+      generatedCode += `
+      .doubleClick(\`${selector}\`, \`${selectorType}\`, \`${description}\`${action.timeout ? ", " + action.timeout : ""})`;
+    }
+
     if (action.type === Actions.PAUSE) {
       generatedCode += `
       .pause(${action.value})`;

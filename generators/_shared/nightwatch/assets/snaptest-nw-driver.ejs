@@ -231,6 +231,40 @@ module.exports.bindHelpers = function(browser) {
 
   };
 
+  browser.doubleClick = function(selector, selectorType = "CSS", description, timeout) {
+
+    var techDescription = stringFormat("(Double click '%s' using '%s')", selector, selectorType);
+
+    browser._elementPresent(selector, selectorType, null, timeout, () => {
+      browser.assert.ok(false, stringFormat("FAILED: '%s' - Couldn't find element to double click. %s", description, techDescription));
+    });
+
+    browser.execute(prepStringFuncForExecute(`function(selector, selectorType) {
+
+      <%= "${snptGetElement}" %>
+
+      (function(element) {
+
+        function triggerMouseEvent(node, eventType) {
+          var clickEvent = document.createEvent('MouseEvents');
+          clickEvent.initEvent(eventType, true, true);
+          node.dispatchEvent(clickEvent);
+        }
+
+        triggerMouseEvent(element, "dblclick");
+
+      })(snptGetElement(selector, selectorType));
+
+    }`), [selector, selectorType], function(result) {
+       if (result.state === "success") {
+         this.assert.ok(description + "; " + techDescription);
+       }
+     });
+
+    return this;
+
+  };
+
   browser.changeInput = function(selector, selectorType = "CSS", value, description, timeout) {
 
     var techDescription = stringFormat("(Change input '%s' using '%s')", selector, selectorType);
@@ -250,7 +284,24 @@ module.exports.bindHelpers = function(browser) {
           node.dispatchEvent( keydownEvent );
         }
 
-        if (el) {
+        function fireEvent(element, event) {
+          if (document.createEventObject) {
+              // dispatch for IE
+              var evt = document.createEventObject();
+              return element.fireEvent('on' + event, evt)
+          } else {
+              // dispatch for firefox + others
+              var evt = document.createEvent("HTMLEvents");
+              evt.initEvent(event, true, true); // event type,bubbling,cancelable
+              return !element.dispatchEvent(evt);
+          }
+        }
+
+        if (el && el.type === "select-one") {
+          var index = value.split(":")[0].trim();
+          el.selectedIndex = index;
+          fireEvent(el, 'change');
+        } else if (el) {
           triggerKeyEvent(el, "keydown");
           el.focus();
           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
