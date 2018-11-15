@@ -174,7 +174,7 @@ function prepData(userData) {
       }
       else if (node.type === "component") {
         // the node only has the component ID.  Find the component and add some node metadata to it.
-        var component = _.find(userData.tests, {id: node.testId});
+        var component = _.find(userData.components, {id: node.testId});
         if (component) {
           component.nodeId = node.id;
           component.folderPath = node.folderPath;
