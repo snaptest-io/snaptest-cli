@@ -107,14 +107,15 @@ function generateTestCode(test, components) {
 
 function defineTestVariables(test) {
 
-  var variableDefs = "";
+var variableDefs = "";
 
-  test.variables.forEach((variable) => {
-    if (variable.name !== "baseUrl") {
-      variableDefs += `const ${variable.name} = \`${variable.defaultValue}\`;`;
-    }
-  });
+test.variables.forEach((variable) => {
+if (variable.name !== "baseUrl") {
+// Allow the setting of the variable value through the "globals.test_settings"
+variableDefs += const ${variable.name} = browser.globals.test_settings[${variablename}] || \${variable.defaultValue}`;`;
+}
+});
 
-  return variableDefs;
+return variableDefs;
 }
 
