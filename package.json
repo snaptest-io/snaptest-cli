@@ -23,7 +23,7 @@
     "js-beautify": "1.6.12",
     "lodash": "4.17.11",
     "mkdirp": "0.5.1",
-    "request": "2.81.0",
+    "request": "2.88.0",
     "rimraf": "2.6.1",
     "sanitize-filename": "1.6.1",
     "csharp-generator": "^1.0.6",
