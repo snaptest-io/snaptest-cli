@@ -4,7 +4,7 @@ var packageInfo = require('./package.json');
 var Promise = require("bluebird");
 var request = Promise.promisifyAll(require("request"));
 var treeUtils = require('./utils/tree');
-var EnhancedGenerator = require('./utils/Generator');
+var Generator = require('./Generator');
 var deepClone = require('deep-clone');
 var rimraf = require('rimraf');
 var _ = require('lodash');
@@ -13,8 +13,8 @@ var API =  'https://api.prolificdevs.com/api/snaptest/1';
 
 /* Official SnapTest generators: */
 var generators = {
-  nightwatch: require("./generators/nightwatch/"),
-  chromeless: require("./generators/chromeless/"),
+  nightwatch: require("nightwatch-generator"),
+  chromeless: require("chromeless-generator"),
   csharp: require('csharp-generator')
 };
 
@@ -82,7 +82,7 @@ getTestData()
     return removeOldTests(testData)
   }).then((testData) => {
     console.log("Generating new tests using %s.", program.framework);
-    EnhancedGenerator(testData, generator)();
+    Generator(testData, generator)();
   }).catch((error) => {
     if (error instanceof Error) {
       throw new Error(error.stack);
