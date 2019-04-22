@@ -26,9 +26,11 @@
     "request": "2.88.0",
     "rimraf": "2.6.1",
     "sanitize-filename": "1.6.1",
-    "csharp-generator": "^1.0.6",
     "touch": "1.0.0",
     "url-parse": "1.4.3",
-    "varname": "2.0.3"
+    "varname": "2.0.3",
+    "csharp-generator": "^1.0.6",
+    "nightwatch-generator": "^1.0.2",
+    "chromeless-generator": "^1.0.0"
   }
 }
