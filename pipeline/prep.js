@@ -99,6 +99,7 @@ module.exports = (userData, program) => {
       components: components,
       tests: tests,
       envs: userData.envs,
+      runs: userData.runs,
       folder: program.folder,
       style: program.style,
       framework: program.framework,
