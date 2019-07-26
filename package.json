@@ -24,7 +24,7 @@
     "fs-extra": "3.0.1",
     "indent-string": "^3.2.0",
     "js-beautify": "1.6.12",
-    "lodash": "4.17.11",
+    "lodash": "4.17.15",
     "mkdirp": "0.5.1",
     "request": "2.88.0",
     "rimraf": "2.6.1",
