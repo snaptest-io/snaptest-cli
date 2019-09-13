@@ -10,7 +10,10 @@ module.exports = (userData, program) => {
     var fullDirectory = deepClone(userData.directory);
     var directory;
     var tagFilters;
-    var testTagsMap = buildTestTagsMap(userData.testsInTags);
+    var testTagsMap =
+      userData.testsInTags ? buildTestTagsMap(userData.testsInTags)
+        : userData.testsInTagsMap ? userData.testsInTagsMap
+        : {};
 
     if (program.tags) {
       try {
@@ -98,7 +101,7 @@ module.exports = (userData, program) => {
       directory,
       components: components,
       tests: tests,
-      envs: userData.envs,
+      envs: userData.envs || userData.dataProfiles || [],
       runs: userData.runs,
       folder: program.folder,
       style: program.style,
