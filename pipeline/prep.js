@@ -15,6 +15,8 @@ module.exports = (userData, program) => {
         : userData.testsInTagsMap ? userData.testsInTagsMap
         : {};
 
+    var settings = buildSettings(userData.settings || [])
+
     if (program.tags) {
       try {
         program.tags = JSON.parse(program.tags);
@@ -81,6 +83,7 @@ module.exports = (userData, program) => {
       }
     });
 
+
     // Apply tag filters to tests.
     if (tagFilters)
       tests = tests.filter((test) => {
@@ -107,6 +110,7 @@ module.exports = (userData, program) => {
       style: program.style,
       framework: program.framework,
       folders: foldersToGen,
+      settings: settings,
       raw: {
         directory: fullDirectory,
         tests: userData.tests,
@@ -143,4 +147,24 @@ function buildTestTagsMap(testsInTags) {
     }
     return last;
   }, {});
+}
+
+function buildSettings(settingsArray) {
+  var settings = {
+    globalTimeout: 5000
+  }
+
+  for (var i = 0; i < settingsArray.length; i++) {
+    var item = settingsArray[i]
+
+    if (item.key === "globalTimeout") {
+      try {
+        settings.globalTimeout = parseInt(item.value)
+      } catch(e) {
+        console.log("Error parsing global timeout.  Reverting to default of 5 seconds.");
+      }
+    }
+  }
+
+  return settings
 }

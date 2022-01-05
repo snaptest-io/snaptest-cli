@@ -29,10 +29,16 @@ module.exports = (program) => {
       headers: { 'apikey': program.token }
     }));
 
+    promises.push(request.getAsync({
+      url: API + "/" + program.accountType + '/' + program.accountId + '/settings',
+      headers: { 'apikey': program.token }
+    }));
+
     return Promise.all(promises).then((response) => {
 
       var multiLoadResponse = response[0];
       var runsResponse = response[1];
+      var settingsResponse = response[2];
 
       if (multiLoadResponse.statusCode === 404 || runsResponse.statusCode === 404) {
         throw new Error("Couldn't load data: Access denied.");
@@ -45,6 +51,7 @@ module.exports = (program) => {
       try {
         var multiLoadBody = JSON.parse(response[0].body);
         var runsBody = JSON.parse(response[1].body);
+        var settingsBody = JSON.parse(response[2].body);
       } catch(e) {
         throw new Error("Couldn't load data: Error parsing JSON. Details: " + e.toString());
       }
@@ -55,6 +62,7 @@ module.exports = (program) => {
 
       var rawData = multiLoadBody;
       rawData.runs = runsBody.runs.items;
+      rawData.settings = settingsBody.settings;
 
       rawData.directory = rawData.directory.tree;
       return rawData;
