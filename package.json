@@ -1,6 +1,6 @@
 {
   "name": "snaptest-cli",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "A command line tool for the SnapTest chrome extension",
   "repository": "snaptest-io/snaptest-cli",
   "homepage": "https://www.snaptest.io/",
@@ -18,22 +18,22 @@
   },
   "dependencies": {
     "bluebird": "3.5.0",
+    "chromeless-generator": "^1.0.0",
     "commander": "2.9.0",
+    "csharp-generator": "^1.0.6",
     "deep-clone": "3.0.2",
-    "ejs": "2.5.7",
+    "ejs": "^3.1.8",
     "fs-extra": "3.0.1",
     "indent-string": "^3.2.0",
     "js-beautify": "1.6.12",
     "lodash": "4.17.15",
-    "mkdirp": "0.5.1",
+    "mkdirp": "^0.5.6",
+    "nightwatch-generator": "^1.0.2",
     "request": "2.88.0",
     "rimraf": "2.6.1",
     "sanitize-filename": "1.6.1",
     "touch": "1.0.0",
-    "url-parse": "1.4.3",
-    "varname": "2.0.3",
-    "csharp-generator": "^1.0.6",
-    "nightwatch-generator": "^1.0.2",
-    "chromeless-generator": "^1.0.0"
+    "url-parse": "^1.5.10",
+    "varname": "2.0.3"
   }
 }
