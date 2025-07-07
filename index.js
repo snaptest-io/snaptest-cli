@@ -7,6 +7,7 @@ var VERSION = require('./package.json').version;
 /* Official SnapTest generators: */
 var generators = {
   nightwatch: require("nightwatch-generator"),
+  "nightwatch-v3": require("nightwatch-v3-generator"),
   chromeless: require("chromeless-generator"),
   csharp: require('csharp-generator')
 };

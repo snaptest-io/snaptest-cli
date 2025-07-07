@@ -10,8 +10,9 @@ npm install -g snaptest-cli
 
 ## Current official generators & styles:
 
-1. `nightwatch`:  Generates code in the popular nightwatchJS framework. [generator repository](https://github.com/snaptest-io/csharp-generator), [project harness](https://github.com/snaptest-io/nightwatch-harness)
-1. `csharp`  Generates code in C#.  [generator repository](https://github.com/snaptest-io/csharp-generator)
+1. `nightwatch`:  Generates code in the popular nightwatchJS framework (V1 & V2). [generator repository](https://www.npmjs.com/package/nightwatch-generator), [project harness](https://github.com/snaptest-io/nightwatch-harness)
+1. `nightwatch-v3`:  Generates code in the nightwatchJS v3 framework. [generator repository](https://www.npmjs.com/package/nightwatch-v3-generator)
+1. `csharp`  Generates code in C#.  [generator repository](https://github.com/snaptest-io/csharp-generator) *(No longer maintained)*
    * NUnit style: `nunit` [project scaffold/harness](https://github.com/snaptest-io/csharpnunit-harness)
    * XUnit style: `xunit` [project scaffold/harness](https://github.com/snaptest-io/csharpxunit-harness)
 
@@ -36,8 +37,7 @@ From the SnapTest extensions dashboard, find the "code" icon/button next to the 
 
 1. Generate only folder: `-f <folderId>` - Generates only the specified folder.
 1. Output folder name: `-o <test folder name>` - Lets you name the test folder whatever you'd like.  It defaults to `snaptests`.
-1. Framework type: `-r <offical framework/language>` - Generates tests in any of the offical frameworks. e.g. `nightwatchjs` or `csharp`.  
-1. Style: `-s <offical style>` - Generates tests with specified style. e.g. for the csharp type, `xunit` or `nunit` are available.  
+1. Framework type: `-r <nightwatch|nightwatch-v3>` - Generates tests in any of the offical frameworks.
 1. Local JSON resource: `-i <path to test JSON file>` - Specify a path to a local json file that you have exported via the SnapTest extension.
 1. Custom generator: `-c <path to custom generator index.js>` - Specify a path to the index.js file of your custom generator.  for more information, [see custom generator docs](https://www.snaptest.io/doc/custom-generators).  
 
